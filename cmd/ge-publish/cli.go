@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -31,26 +32,28 @@ func main() {
 		},
 		Flags: []cli.Flag{
 			&cli.StringFlag{
-				Name:    "private-key",
-				Aliases: []string{"y"},
-				Usage:   "Private key hex",
+				Name:     "private-key",
+				Aliases:  []string{"y"},
+				Usage:    "Private key hex",
+				Required: true,
 			},
 			&cli.StringFlag{
 				Name:    "rpc",
 				Aliases: []string{"p"},
 				Usage:   "RPC provider",
 			},
-			&cli.Uint64Flag{
-				Name:  "gas-limit",
-				Value: 10_000_000,
-				Usage: "Gas limit",
-			},
-			&cli.Uint64Flag{
+			&cli.Int64Flag{
 				Name:  "gas-fee-cap",
 				Value: 10_000_000_000,
 				Usage: "Gas fee cap",
+				Action: func(ctx *cli.Context, i int64) error {
+					if i < 5_000_000 {
+						return fmt.Errorf("flag gas-fee-cap %d below minimum[5M]", i)
+					}
+					return nil
+				},
 			},
-			&cli.Uint64Flag{
+			&cli.Int64Flag{
 				Name:  "gas-tip-cap",
 				Value: 5,
 				Usage: "Gas tip cap",
@@ -59,11 +62,6 @@ func main() {
 				Name:  "testnet",
 				Value: false,
 				Usage: "Testnet",
-			},
-			&cli.BoolFlag{
-				Name:  "raw-tx",
-				Value: false,
-				Usage: "Dump raw tx hex",
 			},
 		},
 	}

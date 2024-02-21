@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/grassrootseconomics/celoutils/v2"
+	"github.com/grassrootseconomics/ge-publish/internal/provider"
 	"github.com/grassrootseconomics/ge-publish/pkg/swappool"
 	"github.com/urfave/cli/v2"
 )
@@ -36,8 +37,8 @@ func (c *Command) RegisterSwapPoolCommand() *cli.Command {
 				Usage:    "Swap pool decimals",
 				Required: true,
 				Action: func(ctx *cli.Context, u uint) error {
-					if u == 0 || u > 6 {
-						return fmt.Errorf("flag decimals value %d out of range[1-6]", u)
+					if u == 0 || u > 18 {
+						return fmt.Errorf("flag decimals value %d out of range[1-18]", u)
 					}
 					return nil
 				},
@@ -45,12 +46,14 @@ func (c *Command) RegisterSwapPoolCommand() *cli.Command {
 			&cli.StringFlag{
 				Name:     "token-registry",
 				Usage:    "Swap pool token registry",
-				Required: true,
+				Value:    "0x0000000000000000000000000000",
+				Required: false,
 			},
 			&cli.StringFlag{
 				Name:     "token-limiter",
+				Value:    "0x0000000000000000000000000000",
 				Usage:    "Swap pool token limiter",
-				Required: true,
+				Required: false,
 			},
 		},
 		Action: func(cCtx *cli.Context) error {
@@ -68,7 +71,13 @@ func (c *Command) RegisterSwapPoolCommand() *cli.Command {
 				return err
 			}
 
-			fmt.Println(bytecode)
+			resp, err := provider.SendContractPublishTx(cCtx, bytecode, contract.GasLimit())
+			if err != nil {
+				return err
+			}
+
+			fmt.Println(resp.TxHash.String())
+
 			return nil
 		},
 	}

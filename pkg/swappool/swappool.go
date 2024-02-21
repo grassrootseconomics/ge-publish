@@ -20,7 +20,11 @@ type (
 	}
 )
 
-const version = "0.0.1"
+const (
+	version = "0.0.1"
+
+	gasLimit = 3_000_000
+)
 
 var (
 	//go:embed SwapPool.bin
@@ -35,6 +39,10 @@ func NewSwapPoolContract() contract.Contract[SwapPoolConstructorArgs] {
 
 func (c *SwapPool) Version() string {
 	return version
+}
+
+func (c *SwapPool) GasLimit() uint64 {
+	return gasLimit
 }
 
 func (c *SwapPool) Bytecode(args SwapPoolConstructorArgs) ([]byte, error) {
