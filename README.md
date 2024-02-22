@@ -33,9 +33,9 @@ sudo mv ge-publish /usr/local/bin
 ge-publish --help
 ```
 
-Examples:
+## Examples
 
-### Limter
+### Limiter
 
 ```bash
 # Set your private key
