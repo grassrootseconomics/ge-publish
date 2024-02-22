@@ -28,6 +28,7 @@ func main() {
 				Subcommands: []*cli.Command{
 					command.RegisterSwapPoolCommand(),
 					command.RegisterDecimalQuoteCommand(),
+					command.RegisterPriceIndexQuoteCommand(),
 				},
 			},
 		},
