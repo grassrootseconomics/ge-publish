@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/grassrootseconomics/ge-publish/internal/command"
+	"github.com/grassrootseconomics/ge-publish/internal/publish"
 	"github.com/urfave/cli/v2"
 )
 
@@ -14,7 +14,7 @@ var (
 )
 
 func main() {
-	command := command.NewCommandContainer(command.CommandOpts{})
+	command := publish.NewCommandContainer(publish.CommandOpts{})
 
 	app := &cli.App{
 		Name:    "ge-publish",
@@ -27,6 +27,7 @@ func main() {
 				Usage:   "Publish a smart contract",
 				Subcommands: []*cli.Command{
 					command.RegisterSwapPoolCommand(),
+					command.RegisterDecimalQuoteCommand(),
 				},
 			},
 		},

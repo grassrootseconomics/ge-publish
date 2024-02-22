@@ -1,4 +1,4 @@
-package command
+package publish
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ func (c *Command) RegisterSwapPoolCommand() *cli.Command {
 	return &cli.Command{
 		Name:    "swap-pool",
 		Aliases: []string{"pool"},
-		Usage:   "Publish the ERC20 swap pool contract",
+		Usage:   "Publish the ERC20 swap pool smart contract",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:     "name",

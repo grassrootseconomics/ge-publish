@@ -1,4 +1,4 @@
-package command
+package publish
 
 type (
 	CommandOpts struct {
