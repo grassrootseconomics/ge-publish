@@ -29,6 +29,7 @@ func main() {
 					command.RegisterSwapPoolCommand(),
 					command.RegisterDecimalQuoteCommand(),
 					command.RegisterPriceIndexQuoteCommand(),
+					command.RegisterLimiterCommand(),
 				},
 			},
 		},
