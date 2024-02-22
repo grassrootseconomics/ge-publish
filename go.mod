@@ -5,6 +5,7 @@ go 1.21.6
 require (
 	github.com/celo-org/celo-blockchain v1.8.0
 	github.com/grassrootseconomics/celoutils/v2 v2.1.1
+	github.com/grassrootseconomics/w3-celo v0.16.0
 	github.com/urfave/cli/v2 v2.27.1
 )
 
@@ -28,7 +29,6 @@ require (
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/golang/snappy v0.0.5-0.20220116011046-fa5810519dcb // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
-	github.com/grassrootseconomics/w3-celo v0.16.0 // indirect
 	github.com/hashicorp/golang-lru v0.5.5-0.20210104140557-80c98217689d // indirect
 	github.com/hdevalence/ed25519consensus v0.0.0-20201207055737-7fde80a9d5ff // indirect
 	github.com/holiman/bloomfilter/v2 v2.0.3 // indirect
