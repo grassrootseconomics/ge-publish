@@ -41,16 +41,19 @@ func main() {
 				Aliases:  []string{"y"},
 				Usage:    "Private key hex",
 				Required: true,
+				EnvVars:  []string{"PRIVATE_KEY"},
 			},
 			&cli.StringFlag{
 				Name:    "rpc",
 				Aliases: []string{"p"},
 				Usage:   "RPC provider",
+				EnvVars: []string{"RPC_PROVIDER"},
 			},
 			&cli.Int64Flag{
-				Name:  "gas-fee-cap",
-				Value: 10_000_000_000,
-				Usage: "Gas fee cap",
+				Name:    "gas-fee-cap",
+				Value:   10_000_000_000,
+				Usage:   "Gas fee cap",
+				EnvVars: []string{"GAS_FEE_CAP"},
 				Action: func(ctx *cli.Context, i int64) error {
 					if i < 5_000_000 {
 						return fmt.Errorf("flag gas-fee-cap %d below minimum[5M]", i)
@@ -59,14 +62,16 @@ func main() {
 				},
 			},
 			&cli.Int64Flag{
-				Name:  "gas-tip-cap",
-				Value: 5,
-				Usage: "Gas tip cap",
+				Name:    "gas-tip-cap",
+				Value:   5,
+				Usage:   "Gas tip cap",
+				EnvVars: []string{"GAS_TIP_CAP"},
 			},
 			&cli.BoolFlag{
-				Name:  "testnet",
-				Value: false,
-				Usage: "Testnet",
+				Name:    "testnet",
+				Value:   false,
+				Usage:   "Testnet",
+				EnvVars: []string{"TESTNET"},
 			},
 		},
 	}
