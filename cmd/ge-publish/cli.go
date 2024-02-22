@@ -31,6 +31,7 @@ func main() {
 					command.RegisterPriceIndexQuoteCommand(),
 					command.RegisterLimiterCommand(),
 					command.RegisterLimiterIndexCommand(),
+					command.RegisterTokenIndexCommand(),
 				},
 			},
 		},
