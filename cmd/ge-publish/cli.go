@@ -30,6 +30,7 @@ func main() {
 					command.RegisterDecimalQuoteCommand(),
 					command.RegisterPriceIndexQuoteCommand(),
 					command.RegisterLimiterCommand(),
+					command.RegisterLimiterIndexCommand(),
 				},
 			},
 		},
