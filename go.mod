@@ -1,6 +1,6 @@
 module github.com/grassrootseconomics/ge-publish
 
-go 1.21.6
+go 1.22.0
 
 require (
 	github.com/celo-org/celo-blockchain v1.8.0
@@ -35,6 +35,8 @@ require (
 	github.com/holiman/uint256 v1.2.4 // indirect
 	github.com/huin/goupnp v1.0.3 // indirect
 	github.com/jackpal/go-nat-pmp v1.0.2 // indirect
+	github.com/kamikazechaser/common v0.2.0 // indirect
+	github.com/lmittmann/tint v1.0.4 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/onsi/gomega v1.10.1 // indirect

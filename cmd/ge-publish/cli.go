@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"log/slog"
 	"os"
 
-	"github.com/grassrootseconomics/ge-publish/internal/publish"
+	"github.com/grassrootseconomics/ge-publish/internal/command"
+	"github.com/kamikazechaser/common/logg"
 	"github.com/urfave/cli/v2"
 )
 
@@ -14,26 +15,41 @@ var (
 )
 
 func main() {
-	command := publish.NewCommandContainer(publish.CommandOpts{})
+	loggOpts := logg.LoggOpts{
+		FormatType: logg.Human,
+		LogLevel:   slog.LevelInfo,
+	}
+
+	if os.Getenv("DEBUG") != "" {
+		loggOpts.LogLevel = slog.LevelDebug
+	}
+
+	baseLogger := logg.NewLogg(loggOpts)
+	commands := command.NewCommands()
 
 	app := &cli.App{
 		Name:    "ge-publish",
 		Version: version,
 		Usage:   "CLI tool to publish GE related smart contracts",
+		Before: func(cCtx *cli.Context) error {
+
+			return nil
+		},
 		Commands: []*cli.Command{
 			{
 				Name:    "publish",
 				Aliases: []string{"p"},
 				Usage:   "Publish a smart contract",
 				Subcommands: []*cli.Command{
-					command.RegisterSwapPoolCommand(),
-					command.RegisterDecimalQuoteCommand(),
-					command.RegisterPriceIndexQuoteCommand(),
-					command.RegisterLimiterCommand(),
-					command.RegisterLimiterIndexCommand(),
-					command.RegisterTokenIndexCommand(),
+					commands.RegisterSwapPoolCommand(baseLogger),
+					commands.RegisterDecimalQuoteCommand(baseLogger),
+					commands.RegisterPriceIndexQuoteCommand(baseLogger),
+					commands.RegisterLimiterCommand(baseLogger),
+					commands.RegisterLimiterIndexCommand(baseLogger),
+					commands.RegisterTokenIndexCommand(baseLogger),
 				},
 			},
+			commands.RegisterWritePrivateKeyCommand(baseLogger),
 		},
 		Flags: []cli.Flag{
 			&cli.StringFlag{
@@ -42,6 +58,7 @@ func main() {
 				Usage:    "Private key hex",
 				Required: true,
 				EnvVars:  []string{"PRIVATE_KEY"},
+				FilePath: commands.PrivateKeyFileLocation(baseLogger),
 			},
 			&cli.StringFlag{
 				Name:    "rpc",
@@ -77,6 +94,7 @@ func main() {
 	}
 
 	if err := app.Run(os.Args); err != nil {
-		log.Fatal(err)
+		baseLogger.Error("could not run ge-publish", "error", err)
+		os.Exit(1)
 	}
 }
