@@ -16,7 +16,7 @@ type (
 const (
 	version = "0.0.1"
 
-	gasLimit = 1_000_000
+	gasLimit = 1_500_000
 )
 
 var (
