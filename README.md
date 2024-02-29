@@ -13,6 +13,8 @@ Supported Smart Contracts:
 - [x] LimiterIndex
 - [x] TokenRegistry
 
+_Note:_ All smart contracts are compiled with v 0.8.19 unless otherwise stated.
+
 ## Install
 
 Download and extract the binary for your OS/Arch from the [releases page](https://github.com/grassrootseconomics/ge-publish/releases).
