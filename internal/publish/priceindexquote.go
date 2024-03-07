@@ -8,13 +8,13 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func (c *Command) RegisterPriceIndexQuoteCommand() *cli.Command {
+func (c *Command) RegisterPriceIndexQuoterCommand() *cli.Command {
 	return &cli.Command{
-		Name:  "price-index-quote",
-		Usage: "Publish the price index quote smart contract",
+		Name:  "price-index-quoter",
+		Usage: "Publish the price index quoter smart contract",
 		Action: func(cCtx *cli.Context) error {
-			contract := priceindexquote.NewPriceIndexQuoteContract()
-			bytecode, err := contract.Bytecode(priceindexquote.PriceIndexQuoteConstructorArgs{})
+			contract := priceindexquote.NewPriceIndexQuoterContract()
+			bytecode, err := contract.Bytecode(priceindexquote.PriceIndexQuoterConstructorArgs{})
 			if err != nil {
 				return err
 			}
