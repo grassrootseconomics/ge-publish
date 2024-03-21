@@ -35,7 +35,8 @@ func (c *Command) RegisterSwapPoolCommand() *cli.Command {
 			&cli.UintFlag{
 				Name:     "decimals",
 				Usage:    "Swap pool decimals",
-				Required: true,
+				Value:    6,
+				Required: false,
 				Action: func(ctx *cli.Context, u uint) error {
 					if u == 0 || u > 18 {
 						return fmt.Errorf("flag decimals value %d out of range[1-18]", u)

@@ -32,6 +32,7 @@ func main() {
 					command.RegisterLimiterCommand(),
 					command.RegisterLimiterIndexCommand(),
 					command.RegisterTokenIndexCommand(),
+					command.RegisterERC20DemurrageCommand(),
 				},
 			},
 		},
