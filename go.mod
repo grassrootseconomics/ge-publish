@@ -4,7 +4,7 @@ go 1.21.6
 
 require (
 	github.com/celo-org/celo-blockchain v1.8.0
-	github.com/grassrootseconomics/celoutils/v2 v2.1.1
+	github.com/grassrootseconomics/celoutils/v2 v2.4.1
 	github.com/grassrootseconomics/w3-celo v0.16.0
 	github.com/urfave/cli/v2 v2.27.1
 )
