@@ -78,6 +78,19 @@ func main() {
 				EnvVars: []string{"DEBUG"},
 			},
 		},
+		Before: func(cCtx *cli.Context) error {
+			if cCtx.Bool("vv") {
+				container.UseDebugMode()
+			}
+			container.Logg.Debug("ge-publish debug mode",
+				"version", cCtx.App.Version,
+				"rpc_endpoint", cCtx.String("rpc"),
+				"testnet", cCtx.Bool("testnet"),
+				"gas_fee_cap", cCtx.Int64("gas-fee-cap"),
+				"gas_tip_cap", cCtx.Int64("gas-tip-cap"),
+			)
+			return nil
+		},
 	}
 
 	if err := app.Run(os.Args); err != nil {

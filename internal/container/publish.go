@@ -2,15 +2,11 @@ package container
 
 import (
 	"fmt"
+	"math/big"
 	"strings"
 
 	"github.com/grassrootseconomics/celoutils/v2"
-	"github.com/grassrootseconomics/ge-publish/pkg/decimalquote"
-	"github.com/grassrootseconomics/ge-publish/pkg/limiter"
-	"github.com/grassrootseconomics/ge-publish/pkg/limiterindex"
-	"github.com/grassrootseconomics/ge-publish/pkg/priceindexquoter"
-	"github.com/grassrootseconomics/ge-publish/pkg/swappool"
-	"github.com/grassrootseconomics/ge-publish/pkg/tokenindex"
+	"github.com/grassrootseconomics/ge-publish/pkg/contract"
 	"github.com/urfave/cli/v2"
 )
 
@@ -22,6 +18,7 @@ func (c *Container) RegisterPublishCommands() []*cli.Command {
 		c.priceIndexQuoter(),
 		c.swapPool(),
 		c.tokenIndex(),
+		c.erc20Demurrage(),
 	}
 }
 
@@ -30,18 +27,18 @@ func (c *Container) decimalQuote() *cli.Command {
 		Name:  "decimal-quote",
 		Usage: "Publish the decimal quote smart contract",
 		Action: func(cCtx *cli.Context) error {
-			contract := decimalquote.NewDecimalQuoteContract()
-			bytecode, err := contract.Bytecode(decimalquote.DecimalQuoteConstructorArgs{})
+			contract := contract.NewDecimalQuote()
+			bytecode, err := contract.Bytecode()
 			if err != nil {
 				return err
 			}
+			c.logInitStage(contract)
 
-			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.GasLimit())
+			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.MaxGasLimit())
 			if err != nil {
 				return err
 			}
-
-			fmt.Println(resp.TxHash.String())
+			c.logPublishedStage(contract, resp)
 
 			return nil
 		},
@@ -53,18 +50,18 @@ func (c *Container) limiter() *cli.Command {
 		Name:  "limiter",
 		Usage: "Publish the limiter smart contract",
 		Action: func(cCtx *cli.Context) error {
-			contract := limiter.NewLimiterContract()
-			bytecode, err := contract.Bytecode(limiter.LimiterConstructorArgs{})
+			contract := contract.NewLimiter()
+			bytecode, err := contract.Bytecode()
 			if err != nil {
 				return err
 			}
+			c.logInitStage(contract)
 
-			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.GasLimit())
+			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.MaxGasLimit())
 			if err != nil {
 				return err
 			}
-
-			fmt.Println(resp.TxHash.String())
+			c.logPublishedStage(contract, resp)
 
 			return nil
 		},
@@ -88,23 +85,21 @@ func (c *Container) limiterIndex() *cli.Command {
 			},
 		},
 		Action: func(cCtx *cli.Context) error {
-			contract := limiterindex.NewLimiterIndexContract()
-			bytecode, err := contract.Bytecode(
-				limiterindex.LimiterIndexConstructorArgs{
-					Holder:         celoutils.HexToAddress(cCtx.String("holder")),
-					LimiterAddress: celoutils.HexToAddress(cCtx.String("limiter-address")),
-				},
-			)
+			contract := contract.NewLimiterIndex(contract.LimiterIndexConstructorArgs{
+				Holder:         celoutils.HexToAddress(cCtx.String("holder")),
+				LimiterAddress: celoutils.HexToAddress(cCtx.String("limiter-address")),
+			})
+			bytecode, err := contract.Bytecode()
 			if err != nil {
 				return err
 			}
+			c.logInitStage(contract)
 
-			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.GasLimit())
+			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.MaxGasLimit())
 			if err != nil {
 				return err
 			}
-
-			fmt.Println(resp.TxHash.String())
+			c.logPublishedStage(contract, resp)
 
 			return nil
 		},
@@ -116,18 +111,18 @@ func (c *Container) priceIndexQuoter() *cli.Command {
 		Name:  "price-index-quoter",
 		Usage: "Publish the price index quoter smart contract",
 		Action: func(cCtx *cli.Context) error {
-			contract := priceindexquoter.NewPriceIndexQuoterContract()
-			bytecode, err := contract.Bytecode(priceindexquoter.PriceIndexQuoterConstructorArgs{})
+			contract := contract.NewPriceIndexQuoter()
+			bytecode, err := contract.Bytecode()
 			if err != nil {
 				return err
 			}
+			c.logInitStage(contract)
 
-			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.GasLimit())
+			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.MaxGasLimit())
 			if err != nil {
 				return err
 			}
-
-			fmt.Println(resp.TxHash.String())
+			c.logPublishedStage(contract, resp)
 
 			return nil
 		},
@@ -181,26 +176,24 @@ func (c *Container) swapPool() *cli.Command {
 			},
 		},
 		Action: func(cCtx *cli.Context) error {
-			contract := swappool.NewSwapPoolContract()
-			bytecode, err := contract.Bytecode(
-				swappool.SwapPoolConstructorArgs{
-					Name:          cCtx.String("name"),
-					Symbol:        strings.ToUpper(cCtx.String("symbol")),
-					Decimals:      uint8(cCtx.Uint("decimals")),
-					TokenRegistry: celoutils.HexToAddress(cCtx.String("token-registry")),
-					TokenLimiter:  celoutils.HexToAddress(cCtx.String("token-limiter")),
-				},
-			)
+			contract := contract.NewSwapPool(contract.SwapPoolConstructorArgs{
+				Name:          cCtx.String("name"),
+				Symbol:        strings.ToUpper(cCtx.String("symbol")),
+				Decimals:      uint8(cCtx.Uint("decimals")),
+				TokenRegistry: celoutils.HexToAddress(cCtx.String("token-registry")),
+				TokenLimiter:  celoutils.HexToAddress(cCtx.String("token-limiter")),
+			})
+			bytecode, err := contract.Bytecode()
 			if err != nil {
 				return err
 			}
+			c.logInitStage(contract)
 
-			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.GasLimit())
+			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.MaxGasLimit())
 			if err != nil {
 				return err
 			}
-
-			fmt.Println(resp.TxHash.String())
+			c.logPublishedStage(contract, resp)
 
 			return nil
 		},
@@ -213,20 +206,120 @@ func (c *Container) tokenIndex() *cli.Command {
 		Aliases: []string{"token-registry"},
 		Usage:   "Publish the ERC20 unique token index smart contract",
 		Action: func(cCtx *cli.Context) error {
-			contract := tokenindex.NewTokenIndexContract()
-			bytecode, err := contract.Bytecode(tokenindex.TokenIndexConstructorArgs{})
+			contract := contract.NewTokenIndex()
+			bytecode, err := contract.Bytecode()
 			if err != nil {
 				return err
 			}
+			c.logInitStage(contract)
 
-			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.GasLimit())
+			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.MaxGasLimit())
 			if err != nil {
 				return err
 			}
-
-			fmt.Println(resp.TxHash.String())
+			c.logPublishedStage(contract, resp)
 
 			return nil
 		},
 	}
+}
+
+func (c *Container) erc20Demurrage() *cli.Command {
+	return &cli.Command{
+		Name:    "erc20-demurrage",
+		Aliases: []string{"erc20", "det", "voucher", "token"},
+		Usage:   "Publish the ERC20 (demurrage) smart contract",
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:     "name",
+				Usage:    "Token name",
+				Required: true,
+			},
+			&cli.StringFlag{
+				Name:     "symbol",
+				Usage:    "Token symbol",
+				Required: true,
+				Action: func(ctx *cli.Context, s string) error {
+					if len(s) < 3 || len(s) > 10 {
+						return fmt.Errorf("flag symbol %s length out of range[3-10]", s)
+					}
+					return nil
+				},
+			},
+			&cli.UintFlag{
+				Name:     "decimals",
+				Usage:    "Token decimals",
+				Value:    6,
+				Required: false,
+				Action: func(ctx *cli.Context, u uint) error {
+					if u == 0 || u > 18 {
+						return fmt.Errorf("flag decimals value %d out of range[1-18]", u)
+					}
+					return nil
+				},
+			},
+			&cli.Uint64Flag{
+				Name:     "demurrage-level",
+				Aliases:  []string{"decay-level"},
+				Usage:    "Level of decay per minute",
+				Value:    20000,
+				Required: false,
+			},
+			&cli.Uint64Flag{
+				Name:     "redistribution-period",
+				Aliases:  []string{"period-minutes"},
+				Usage:    "Number of minutes between each time the demurraged value can be withdrawn to the Sink Account",
+				Value:    43200,
+				Required: false,
+			},
+			&cli.StringFlag{
+				Name:     "sink-address",
+				Aliases:  []string{"community-fund"},
+				Usage:    "The initial Sink Address",
+				Required: true,
+			},
+		},
+		Action: func(cCtx *cli.Context) error {
+			contract := contract.NewERC20Demurrage(contract.ERC20DemurrageConstructorArgs{
+				Name:               cCtx.String("name"),
+				Symbol:             strings.ToUpper(cCtx.String("symbol")),
+				Decimals:           uint8(cCtx.Uint("decimals")),
+				DecayLevel:         big.NewInt(int64(cCtx.Uint64("demurrage-level"))),
+				PeriodMinutes:      big.NewInt(int64(cCtx.Uint64("redistribution-period"))),
+				DefaultSinkAddress: celoutils.HexToAddress(cCtx.String("sink-address")),
+			})
+			bytecode, err := contract.Bytecode()
+			if err != nil {
+				return err
+			}
+			c.logInitStage(contract)
+
+			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.MaxGasLimit())
+			if err != nil {
+				return err
+			}
+			c.logPublishedStage(contract, resp)
+
+			return nil
+		},
+	}
+}
+
+func (c *Container) logInitStage(contract contract.Contract) {
+	c.Logg.Info(fmt.Sprintf("publishing %s contract", contract.Name()),
+		"version", contract.Version(),
+		"constructor_args", contract.ConstructorArgs(),
+	)
+	c.Logg.Debug(fmt.Sprintf("publishing %s contract", contract.Name()),
+		"license", contract.License(),
+		"source", contract.Source(),
+		"solidity_version", contract.SolidityVersion(),
+		"evm_fork", contract.EVMFork(),
+	)
+}
+
+func (c *Container) logPublishedStage(contract contract.Contract, resp PublishTxResp) {
+	c.Logg.Info(fmt.Sprintf("successfully published %s contract", contract.Name()),
+		"tx_hash", resp.TxHash.String(),
+	)
 }

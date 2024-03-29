@@ -3,25 +3,23 @@ package swappool
 import (
 	_ "embed"
 
-	"github.com/celo-org/celo-blockchain/common"
 	"github.com/grassrootseconomics/celoutils/v2"
-	"github.com/grassrootseconomics/ge-publish/pkg/contract"
+	"github.com/grassrootseconomics/ge-publish/pkg/util"
 )
 
 type (
-	SwapPool struct{}
-
-	SwapPoolConstructorArgs struct {
-		Name          string
-		Symbol        string
-		Decimals      uint8
-		TokenRegistry common.Address
-		TokenLimiter  common.Address
+	SwapPool struct {
+		Constructor []any
 	}
 )
 
 const (
-	version = "0.0.2"
+	name            = "SwapPool"
+	version         = "4931ef1"
+	license         = "AGPL-3.0"
+	source          = "https://github.com/grassrootseconomics/erc20-pool/blob/sohail/pool-updates/solidity/SwapPool.sol"
+	solidityVersion = "0.8.25+commit.b61c2a91"
+	evmFork         = "istanbul"
 
 	gasLimit = 3_000_000
 )
@@ -33,24 +31,38 @@ var (
 	abi string
 )
 
-func NewSwapPoolContract() contract.Contract[SwapPoolConstructorArgs] {
-	return &SwapPool{}
+func (c *SwapPool) Name() string {
+	return name
 }
 
 func (c *SwapPool) Version() string {
 	return version
 }
 
-func (c *SwapPool) GasLimit() uint64 {
-	return gasLimit
+func (c *SwapPool) License() string {
+	return license
 }
 
-func (c *SwapPool) Bytecode(args SwapPoolConstructorArgs) ([]byte, error) {
-	return celoutils.PrepareContractBytecodeData(bin, abi, []any{
-		args.Name,
-		args.Symbol,
-		args.Decimals,
-		args.TokenRegistry,
-		args.TokenLimiter,
-	})
+func (c *SwapPool) Source() string {
+	return source
+}
+
+func (c *SwapPool) SolidityVersion() string {
+	return solidityVersion
+}
+
+func (c *SwapPool) EVMFork() string {
+	return evmFork
+}
+
+func (c *SwapPool) ConstructorArgs() []string {
+	return util.DumpConstructorArgs(c.Constructor)
+}
+
+func (c *SwapPool) Bytecode() ([]byte, error) {
+	return celoutils.PrepareContractBytecodeData(bin, abi, c.Constructor)
+}
+
+func (c *SwapPool) MaxGasLimit() uint64 {
+	return gasLimit
 }

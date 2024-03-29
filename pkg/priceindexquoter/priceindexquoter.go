@@ -4,17 +4,22 @@ import (
 	_ "embed"
 
 	"github.com/grassrootseconomics/celoutils/v2"
-	"github.com/grassrootseconomics/ge-publish/pkg/contract"
+	"github.com/grassrootseconomics/ge-publish/pkg/util"
 )
 
 type (
-	PriceIndexQuoter struct{}
-
-	PriceIndexQuoterConstructorArgs struct{}
+	PriceIndexQuoter struct {
+		Constructor []any
+	}
 )
 
 const (
-	version = "0.1.0"
+	name            = "PriceIndexQuoter"
+	version         = "6721100"
+	license         = "AGPL-3.0"
+	source          = "https://github.com/grassrootseconomics/price-index-quoter/blob/master/src/PriceIndexQuoter.sol"
+	solidityVersion = "0.8.25+commit.b61c2a91"
+	evmFork         = "istanbul"
 
 	gasLimit = 2_000_000
 )
@@ -26,18 +31,38 @@ var (
 	abi string
 )
 
-func NewPriceIndexQuoterContract() contract.Contract[PriceIndexQuoterConstructorArgs] {
-	return &PriceIndexQuoter{}
+func (c *PriceIndexQuoter) Name() string {
+	return name
 }
 
 func (c *PriceIndexQuoter) Version() string {
 	return version
 }
 
-func (c *PriceIndexQuoter) GasLimit() uint64 {
-	return gasLimit
+func (c *PriceIndexQuoter) License() string {
+	return license
 }
 
-func (c *PriceIndexQuoter) Bytecode(args PriceIndexQuoterConstructorArgs) ([]byte, error) {
-	return celoutils.PrepareContractBytecodeData(bin, abi, []any{})
+func (c *PriceIndexQuoter) Source() string {
+	return source
+}
+
+func (c *PriceIndexQuoter) SolidityVersion() string {
+	return solidityVersion
+}
+
+func (c *PriceIndexQuoter) EVMFork() string {
+	return evmFork
+}
+
+func (c *PriceIndexQuoter) ConstructorArgs() []string {
+	return util.DumpConstructorArgs(c.Constructor)
+}
+
+func (c *PriceIndexQuoter) Bytecode() ([]byte, error) {
+	return celoutils.PrepareContractBytecodeData(bin, abi, c.Constructor)
+}
+
+func (c *PriceIndexQuoter) MaxGasLimit() uint64 {
+	return gasLimit
 }

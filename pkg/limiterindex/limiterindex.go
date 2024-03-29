@@ -5,20 +5,27 @@ import (
 
 	"github.com/celo-org/celo-blockchain/common"
 	"github.com/grassrootseconomics/celoutils/v2"
-	"github.com/grassrootseconomics/ge-publish/pkg/contract"
+	"github.com/grassrootseconomics/ge-publish/pkg/util"
 )
 
 type (
-	LimiterIndex struct{}
+	LimiterIndex struct {
+		Constructor []any
+	}
 
 	LimiterIndexConstructorArgs struct {
-		Holder         common.Address
-		LimiterAddress common.Address
+		Holder              common.Address
+		LimiterIndexAddress common.Address
 	}
 )
 
 const (
-	version = "0.0.1"
+	name            = "LimiterIndex"
+	version         = "v0.0.1"
+	license         = "AGPL-3.0"
+	source          = "https://github.com/nolash/erc20-limiter/blob/master/solidity/LimiterIndex.sol"
+	solidityVersion = "0.8.19+commit.7dd6d404"
+	evmFork         = "byzantium"
 
 	gasLimit = 750_000
 )
@@ -30,21 +37,38 @@ var (
 	abi string
 )
 
-func NewLimiterIndexContract() contract.Contract[LimiterIndexConstructorArgs] {
-	return &LimiterIndex{}
+func (c *LimiterIndex) Name() string {
+	return name
 }
 
 func (c *LimiterIndex) Version() string {
 	return version
 }
 
-func (c *LimiterIndex) GasLimit() uint64 {
-	return gasLimit
+func (c *LimiterIndex) License() string {
+	return license
 }
 
-func (c *LimiterIndex) Bytecode(args LimiterIndexConstructorArgs) ([]byte, error) {
-	return celoutils.PrepareContractBytecodeData(bin, abi, []any{
-		args.Holder,
-		args.LimiterAddress,
-	})
+func (c *LimiterIndex) Source() string {
+	return source
+}
+
+func (c *LimiterIndex) SolidityVersion() string {
+	return solidityVersion
+}
+
+func (c *LimiterIndex) EVMFork() string {
+	return evmFork
+}
+
+func (c *LimiterIndex) ConstructorArgs() []string {
+	return util.DumpConstructorArgs(c.Constructor)
+}
+
+func (c *LimiterIndex) Bytecode() ([]byte, error) {
+	return celoutils.PrepareContractBytecodeData(bin, abi, c.Constructor)
+}
+
+func (c *LimiterIndex) MaxGasLimit() uint64 {
+	return gasLimit
 }
