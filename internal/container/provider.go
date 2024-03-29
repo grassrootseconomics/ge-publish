@@ -1,4 +1,4 @@
-package provider
+package container
 
 import (
 	"math/big"
@@ -14,7 +14,7 @@ type PublishTxResp struct {
 	TxHash common.Hash
 }
 
-func SendContractPublishTx(ctx *cli.Context, contractBytecode []byte, gasLimit uint64) (PublishTxResp, error) {
+func (c *Container) SendContractPublishTx(cCtx *cli.Context, contractBytecode []byte, gasLimit uint64) (PublishTxResp, error) {
 	var (
 		nonce  uint64
 		txHash common.Hash
@@ -22,12 +22,12 @@ func SendContractPublishTx(ctx *cli.Context, contractBytecode []byte, gasLimit u
 
 	providerOpts := celoutils.ProviderOpts{
 		ChainId:     celoutils.MainnetChainId,
-		RpcEndpoint: "https://celo.grassecon.net",
+		RpcEndpoint: cCtx.String("rpc"),
 	}
 
-	if ctx.Bool("testnet") {
+	if cCtx.Bool("testnet") {
 		providerOpts.ChainId = celoutils.TestnetChainId
-		providerOpts.RpcEndpoint = "https://celo.testnet.grassecon.net"
+		providerOpts.RpcEndpoint = cCtx.String("rpc")
 	}
 
 	p, err := celoutils.NewProvider(providerOpts)
@@ -35,13 +35,13 @@ func SendContractPublishTx(ctx *cli.Context, contractBytecode []byte, gasLimit u
 		return PublishTxResp{}, err
 	}
 
-	privateKey, err := crypto.HexToECDSA(ctx.String("private-key"))
+	privateKey, err := crypto.HexToECDSA(cCtx.String("private-key"))
 	if err != nil {
 		return PublishTxResp{}, err
 	}
 
 	if err := p.Client.CallCtx(
-		ctx.Context,
+		cCtx.Context,
 		eth.Nonce(crypto.PubkeyToAddress(privateKey.PublicKey), nil).Returns(&nonce),
 	); err != nil {
 		return PublishTxResp{}, err
@@ -51,8 +51,8 @@ func SendContractPublishTx(ctx *cli.Context, contractBytecode []byte, gasLimit u
 		privateKey,
 		celoutils.ContractPublishTxOpts{
 			ContractByteCode: contractBytecode,
-			GasFeeCap:        big.NewInt(ctx.Int64("gas-fee-cap")),
-			GasTipCap:        big.NewInt(ctx.Int64("gas-tip-cap")),
+			GasFeeCap:        big.NewInt(cCtx.Int64("gas-fee-cap")),
+			GasTipCap:        big.NewInt(cCtx.Int64("gas-tip-cap")),
 			GasLimit:         gasLimit,
 			Nonce:            nonce,
 		},
@@ -62,7 +62,7 @@ func SendContractPublishTx(ctx *cli.Context, contractBytecode []byte, gasLimit u
 	}
 
 	if err := p.Client.CallCtx(
-		ctx.Context,
+		cCtx.Context,
 		eth.SendTx(tx).Returns(&txHash),
 	); err != nil {
 		return PublishTxResp{}, err

@@ -12,10 +12,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set outputs
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
       - name: Build
         uses: crazy-max/ghaction-xgo@v3
         with:
@@ -25,11 +21,7 @@ jobs:
           dest: dist
           prefix: ge-publish
           targets: linux/amd64,linux/arm64,windows/amd64,darwin/arm64,darwin/amd64
-          v: false
-          x: false
-          race: false
-          ldflags: -s -w
-          buildmode: default
+          ldflags: -s -w -X main.version=${{ github.ref_name }}
 
       - name: Compress dist files
         run: |

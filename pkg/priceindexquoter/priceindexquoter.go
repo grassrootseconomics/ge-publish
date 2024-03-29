@@ -1,4 +1,4 @@
-package priceindexquote
+package priceindexquoter
 
 import (
 	_ "embed"
