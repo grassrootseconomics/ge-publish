@@ -12,6 +12,7 @@ Supported Smart Contracts:
 - [x] Limiter
 - [x] LimiterIndex
 - [x] TokenRegistry
+- [x] ERC20Demurrage
 
 _Note:_ All smart contracts are compiled with v 0.8.19 unless otherwise stated.
 
@@ -19,14 +20,10 @@ _Note:_ All smart contracts are compiled with v 0.8.19 unless otherwise stated.
 
 Download and extract the binary for your OS/Arch from the [releases page](https://github.com/grassrootseconomics/ge-publish/releases).
 
-### Linux
+Alternatively you can install with:
 
 ```bash
-wget https://github.com/grassrootseconomics/ge-publish/releases/latest/download/ge-publish-linux-amd64.zip
-unzip -j ge-publish-linux-amd64.zip
-mv ge-publish-linux-amd64 ge-publish
-# (Optional) Make it globally available
-sudo mv ge-publish /usr/local/bin
+curl -L https://ge-publish.grassecon.net/install.sh | bash
 ```
 
 ## Usage
