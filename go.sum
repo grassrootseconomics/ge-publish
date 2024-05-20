@@ -228,8 +228,8 @@ github.com/gorilla/websocket v1.4.2/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/ad
 github.com/gorilla/websocket v1.5.0 h1:PPwGk2jz7EePpoHN/+ClbZu8SPxiqlu12wZP/3sWmnc=
 github.com/gorilla/websocket v1.5.0/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/graph-gophers/graphql-go v1.3.0/go.mod h1:9CQHMSxwO4MprSdzoIEobiHpoLtHm77vfxsvsIN5Vuc=
-github.com/grassrootseconomics/celoutils/v2 v2.4.1 h1:8S4+TfXVevxu3+tBIyzGM4z6iT3Rw3fZHoS93rGFCVo=
-github.com/grassrootseconomics/celoutils/v2 v2.4.1/go.mod h1:DB9sh7lY9zw0/cyCu8uYunAe+IDM8/104l+KEhkJnqg=
+github.com/grassrootseconomics/celoutils/v2 v2.7.0 h1:M2OxsknHjLT5hCk1K+clVusB8uyAqeJNrXOM86cbxkg=
+github.com/grassrootseconomics/celoutils/v2 v2.7.0/go.mod h1:DB9sh7lY9zw0/cyCu8uYunAe+IDM8/104l+KEhkJnqg=
 github.com/grassrootseconomics/w3-celo v0.16.0 h1:AKPd+LGqR4YgkLw44V4Jgq/+prhJfTnaWzFOdS8JRgg=
 github.com/grassrootseconomics/w3-celo v0.16.0/go.mod h1:SVduFQshhMPMIRFKix6JwOZmv5a/e0NTObVeB4lXrH4=
 github.com/hashicorp/go-bexpr v0.1.10/go.mod h1:oxlubA2vC/gFVfX1A6JGp7ls7uCDlfJn732ehYYg+g0=
