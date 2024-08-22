@@ -15,9 +15,9 @@ type (
 
 const (
 	name            = "ERC20Demurrage"
-	version         = "v0.5.6"
+	version         = "v0.5.7"
 	license         = "AGPL-3.0"
-	source          = "https://github.com/nolash/erc20-demurrage-token/tree/dev-0.5.6/solidity"
+	source          = "https://github.com/nolash/erc20-demurrage-token/tree/dev-0.5.7/solidity"
 	solidityVersion = "0.8.25+commit.b61c2a91"
 	evmFork         = "istanbul"
 
