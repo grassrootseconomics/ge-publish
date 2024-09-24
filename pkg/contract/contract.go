@@ -6,8 +6,10 @@ import (
 	"github.com/celo-org/celo-blockchain/common"
 	"github.com/grassrootseconomics/ge-publish/pkg/decimalquote"
 	"github.com/grassrootseconomics/ge-publish/pkg/erc20demurrage"
+	"github.com/grassrootseconomics/ge-publish/pkg/ethfaucet"
 	"github.com/grassrootseconomics/ge-publish/pkg/limiter"
 	"github.com/grassrootseconomics/ge-publish/pkg/limiterindex"
+	"github.com/grassrootseconomics/ge-publish/pkg/periodsimple"
 	"github.com/grassrootseconomics/ge-publish/pkg/priceindexquoter"
 	"github.com/grassrootseconomics/ge-publish/pkg/swappool"
 	"github.com/grassrootseconomics/ge-publish/pkg/tokenindex"
@@ -112,5 +114,17 @@ func NewERC20Demurrage(args ERC20DemurrageConstructorArgs) Contract {
 			args.PeriodMinutes,
 			args.DefaultSinkAddress,
 		},
+	}
+}
+
+func NewPeriodSimple() Contract {
+	return &periodsimple.PeriodSimple{
+		Constructor: []any{},
+	}
+}
+
+func NewEthFaucet() Contract {
+	return &ethfaucet.EthFaucet{
+		Constructor: []any{},
 	}
 }

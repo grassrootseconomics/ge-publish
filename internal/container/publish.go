@@ -19,6 +19,8 @@ func (c *Container) RegisterPublishCommands() []*cli.Command {
 		c.swapPool(),
 		c.tokenIndex(),
 		c.erc20Demurrage(),
+		c.periodSimple(),
+		c.ethFaucet(),
 	}
 }
 
@@ -288,6 +290,54 @@ func (c *Container) erc20Demurrage() *cli.Command {
 				PeriodMinutes:      big.NewInt(int64(cCtx.Uint64("redistribution-period"))),
 				DefaultSinkAddress: celoutils.HexToAddress(cCtx.String("sink-address")),
 			})
+			bytecode, err := contract.Bytecode()
+			if err != nil {
+				return err
+			}
+			c.logInitStage(contract)
+
+			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.MaxGasLimit())
+			if err != nil {
+				return err
+			}
+			c.logPublishedStage(contract, resp)
+
+			return nil
+		},
+	}
+}
+
+func (c *Container) periodSimple() *cli.Command {
+	return &cli.Command{
+		Name:    "period-simple",
+		Aliases: []string{"period"},
+		Usage:   "Publish the period backend smart contract to complement the GasFaucet contract",
+		Action: func(cCtx *cli.Context) error {
+			contract := contract.NewPeriodSimple()
+			bytecode, err := contract.Bytecode()
+			if err != nil {
+				return err
+			}
+			c.logInitStage(contract)
+
+			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.MaxGasLimit())
+			if err != nil {
+				return err
+			}
+			c.logPublishedStage(contract, resp)
+
+			return nil
+		},
+	}
+}
+
+func (c *Container) ethFaucet() *cli.Command {
+	return &cli.Command{
+		Name:    "eth-faucet",
+		Aliases: []string{"faucet"},
+		Usage:   "Publish the EthFaucet smart contract",
+		Action: func(cCtx *cli.Context) error {
+			contract := contract.NewEthFaucet()
 			bytecode, err := contract.Bytecode()
 			if err != nil {
 				return err
