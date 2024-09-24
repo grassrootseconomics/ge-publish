@@ -3,7 +3,7 @@ package swappool
 import (
 	_ "embed"
 
-	"github.com/grassrootseconomics/celoutils/v2"
+	"github.com/grassrootseconomics/ethutils"
 	"github.com/grassrootseconomics/ge-publish/pkg/util"
 )
 
@@ -60,7 +60,7 @@ func (c *SwapPool) ConstructorArgs() []string {
 }
 
 func (c *SwapPool) Bytecode() ([]byte, error) {
-	return celoutils.PrepareContractBytecodeData(bin, abi, c.Constructor)
+	return ethutils.PrepareContractBytecodeData(bin, abi, c.Constructor)
 }
 
 func (c *SwapPool) MaxGasLimit() uint64 {

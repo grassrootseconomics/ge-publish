@@ -3,7 +3,7 @@ package ethfaucet
 import (
 	_ "embed"
 
-	"github.com/grassrootseconomics/celoutils/v2"
+	"github.com/grassrootseconomics/ethutils"
 	"github.com/grassrootseconomics/ge-publish/pkg/util"
 )
 
@@ -60,7 +60,7 @@ func (c *EthFaucet) ConstructorArgs() []string {
 }
 
 func (c *EthFaucet) Bytecode() ([]byte, error) {
-	return celoutils.PrepareContractBytecodeData(bin, abi, c.Constructor)
+	return ethutils.PrepareContractBytecodeData(bin, abi, c.Constructor)
 }
 
 func (c *EthFaucet) MaxGasLimit() uint64 {

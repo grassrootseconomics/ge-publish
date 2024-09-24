@@ -3,7 +3,7 @@ package contract
 import (
 	"math/big"
 
-	"github.com/celo-org/celo-blockchain/common"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/grassrootseconomics/ge-publish/pkg/accountsindex"
 	"github.com/grassrootseconomics/ge-publish/pkg/decimalquote"
 	"github.com/grassrootseconomics/ge-publish/pkg/erc20"

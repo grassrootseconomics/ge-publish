@@ -5,7 +5,7 @@ import (
 	"math/big"
 	"strings"
 
-	"github.com/grassrootseconomics/celoutils/v2"
+	"github.com/grassrootseconomics/ethutils"
 	"github.com/grassrootseconomics/ge-publish/pkg/contract"
 	"github.com/urfave/cli/v2"
 )
@@ -90,8 +90,8 @@ func (c *Container) limiterIndex() *cli.Command {
 		},
 		Action: func(cCtx *cli.Context) error {
 			contract := contract.NewLimiterIndex(contract.LimiterIndexConstructorArgs{
-				Holder:         celoutils.HexToAddress(cCtx.String("holder")),
-				LimiterAddress: celoutils.HexToAddress(cCtx.String("limiter-address")),
+				Holder:         ethutils.HexToAddress(cCtx.String("holder")),
+				LimiterAddress: ethutils.HexToAddress(cCtx.String("limiter-address")),
 			})
 			bytecode, err := contract.Bytecode()
 			if err != nil {
@@ -184,8 +184,8 @@ func (c *Container) swapPool() *cli.Command {
 				Name:          cCtx.String("name"),
 				Symbol:        strings.ToUpper(cCtx.String("symbol")),
 				Decimals:      uint8(cCtx.Uint("decimals")),
-				TokenRegistry: celoutils.HexToAddress(cCtx.String("token-registry")),
-				TokenLimiter:  celoutils.HexToAddress(cCtx.String("token-limiter")),
+				TokenRegistry: ethutils.HexToAddress(cCtx.String("token-registry")),
+				TokenLimiter:  ethutils.HexToAddress(cCtx.String("token-limiter")),
 			})
 			bytecode, err := contract.Bytecode()
 			if err != nil {
@@ -290,7 +290,7 @@ func (c *Container) erc20Demurrage() *cli.Command {
 				Decimals:           uint8(cCtx.Uint("decimals")),
 				DecayLevel:         big.NewInt(int64(cCtx.Uint64("demurrage-level"))),
 				PeriodMinutes:      big.NewInt(int64(cCtx.Uint64("redistribution-period"))),
-				DefaultSinkAddress: celoutils.HexToAddress(cCtx.String("sink-address")),
+				DefaultSinkAddress: ethutils.HexToAddress(cCtx.String("sink-address")),
 			})
 			bytecode, err := contract.Bytecode()
 			if err != nil {
@@ -462,6 +462,7 @@ func (c *Container) logInitStage(contract contract.Contract) {
 
 func (c *Container) logPublishedStage(contract contract.Contract, resp PublishTxResp) {
 	c.Logg.Info(fmt.Sprintf("successfully published %s contract", contract.Name()),
+		"contract_address", resp.ContractAddress.Hex(),
 		"tx_hash", resp.TxHash.String(),
 	)
 }

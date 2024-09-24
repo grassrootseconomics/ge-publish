@@ -3,8 +3,8 @@ package limiterindex
 import (
 	_ "embed"
 
-	"github.com/celo-org/celo-blockchain/common"
-	"github.com/grassrootseconomics/celoutils/v2"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/grassrootseconomics/ethutils"
 	"github.com/grassrootseconomics/ge-publish/pkg/util"
 )
 
@@ -66,7 +66,7 @@ func (c *LimiterIndex) ConstructorArgs() []string {
 }
 
 func (c *LimiterIndex) Bytecode() ([]byte, error) {
-	return celoutils.PrepareContractBytecodeData(bin, abi, c.Constructor)
+	return ethutils.PrepareContractBytecodeData(bin, abi, c.Constructor)
 }
 
 func (c *LimiterIndex) MaxGasLimit() uint64 {

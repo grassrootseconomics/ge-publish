@@ -41,7 +41,7 @@ func main() {
 				Aliases:  []string{"p"},
 				Usage:    "RPC provider",
 				Required: false,
-				Value:    "https://1rpc.io/celo",
+				Value:    "http://localhost:8545",
 				EnvVars:  []string{"RPC_PROVIDER"},
 			},
 			&cli.Int64Flag{
@@ -64,11 +64,11 @@ func main() {
 				Usage:   "Gas tip cap",
 				EnvVars: []string{"GAS_TIP_CAP"},
 			},
-			&cli.BoolFlag{
-				Name:    "testnet",
-				Value:   false,
-				Usage:   "Testnet",
-				EnvVars: []string{"TESTNET"},
+			&cli.Int64Flag{
+				Name:    "chainid",
+				Value:   1337,
+				Usage:   "Chain ID",
+				EnvVars: []string{"CHAIN_ID"},
 			},
 			&cli.BoolFlag{
 				Name:    "vv",
@@ -85,7 +85,7 @@ func main() {
 			container.Logg.Debug("ge-publish debug mode",
 				"version", cCtx.App.Version,
 				"rpc_endpoint", cCtx.String("rpc"),
-				"testnet", cCtx.Bool("testnet"),
+				"chainid", cCtx.Int64("chainid"),
 				"gas_fee_cap", cCtx.Int64("gas-fee-cap"),
 				"gas_tip_cap", cCtx.Int64("gas-tip-cap"),
 			)

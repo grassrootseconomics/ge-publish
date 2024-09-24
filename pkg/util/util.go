@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/celo-org/celo-blockchain/common"
+	"github.com/ethereum/go-ethereum/common"
 )
 
 func DumpConstructorArgs(constructorArgs []any) []string {

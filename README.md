@@ -13,6 +13,10 @@ Supported Smart Contracts:
 - [x] LimiterIndex
 - [x] TokenRegistry
 - [x] ERC20Demurrage
+- [x] EthFaucet
+- [x] SimplePeriodBackend
+- [x] GiftableERC20
+- [x] AccountsIndex
 
 _Note:_ All smart contracts are compiled with v 0.8.19 unless otherwise stated.
 

@@ -3,7 +3,7 @@ package erc20demurrage
 import (
 	_ "embed"
 
-	"github.com/grassrootseconomics/celoutils/v2"
+	"github.com/grassrootseconomics/ethutils"
 	"github.com/grassrootseconomics/ge-publish/pkg/util"
 )
 
@@ -60,7 +60,7 @@ func (c *ERC20Demurrage) ConstructorArgs() []string {
 }
 
 func (c *ERC20Demurrage) Bytecode() ([]byte, error) {
-	return celoutils.PrepareContractBytecodeData(bin, abi, c.Constructor)
+	return ethutils.PrepareContractBytecodeData(bin, abi, c.Constructor)
 }
 
 func (c *ERC20Demurrage) MaxGasLimit() uint64 {
