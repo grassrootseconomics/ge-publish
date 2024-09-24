@@ -4,6 +4,7 @@ import (
 	"math/big"
 
 	"github.com/celo-org/celo-blockchain/common"
+	"github.com/grassrootseconomics/ge-publish/pkg/accountsindex"
 	"github.com/grassrootseconomics/ge-publish/pkg/decimalquote"
 	"github.com/grassrootseconomics/ge-publish/pkg/erc20demurrage"
 	"github.com/grassrootseconomics/ge-publish/pkg/ethfaucet"
@@ -125,6 +126,12 @@ func NewPeriodSimple() Contract {
 
 func NewEthFaucet() Contract {
 	return &ethfaucet.EthFaucet{
+		Constructor: []any{},
+	}
+}
+
+func NewAccountsIndex() Contract {
+	return &accountsindex.AccountsIndex{
 		Constructor: []any{},
 	}
 }

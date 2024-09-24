@@ -21,6 +21,7 @@ func (c *Container) RegisterPublishCommands() []*cli.Command {
 		c.erc20Demurrage(),
 		c.periodSimple(),
 		c.ethFaucet(),
+		c.accountsIndex(),
 	}
 }
 
@@ -311,7 +312,7 @@ func (c *Container) periodSimple() *cli.Command {
 	return &cli.Command{
 		Name:    "period-simple",
 		Aliases: []string{"period"},
-		Usage:   "Publish the period backend smart contract to complement the GasFaucet contract",
+		Usage:   "Publish the period backend smart contract to complement the gas faucet contract",
 		Action: func(cCtx *cli.Context) error {
 			contract := contract.NewPeriodSimple()
 			bytecode, err := contract.Bytecode()
@@ -335,9 +336,33 @@ func (c *Container) ethFaucet() *cli.Command {
 	return &cli.Command{
 		Name:    "eth-faucet",
 		Aliases: []string{"faucet"},
-		Usage:   "Publish the EthFaucet smart contract",
+		Usage:   "Publish the gas faucet smart contract",
 		Action: func(cCtx *cli.Context) error {
 			contract := contract.NewEthFaucet()
+			bytecode, err := contract.Bytecode()
+			if err != nil {
+				return err
+			}
+			c.logInitStage(contract)
+
+			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.MaxGasLimit())
+			if err != nil {
+				return err
+			}
+			c.logPublishedStage(contract, resp)
+
+			return nil
+		},
+	}
+}
+
+func (c *Container) accountsIndex() *cli.Command {
+	return &cli.Command{
+		Name:    "accounts-index",
+		Aliases: []string{"user-index"},
+		Usage:   "Publish the accounts index smart contract",
+		Action: func(cCtx *cli.Context) error {
+			contract := contract.NewAccountsIndex()
 			bytecode, err := contract.Bytecode()
 			if err != nil {
 				return err
