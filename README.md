@@ -1,6 +1,6 @@
 # ge-publish
 
-> CLI tool to publish GE related smart contracts to Celo.
+> CLI tool to publish GE related smart contracts to any EVM chain.
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/grassrootseconomics/ge-publish)
 
@@ -18,7 +18,7 @@ Supported Smart Contracts:
 - [x] GiftableERC20
 - [x] AccountsIndex
 
-_Note:_ All smart contracts are compiled with v 0.8.19 unless otherwise stated.
+_Note:_ All smart contracts are compiled with `v0.8.25, Istanbul hard fork` unless otherwise stated.
 
 ## Install
 
@@ -43,7 +43,9 @@ ge-publish --help
 ```bash
 # Set your private key
 export PRIVATE_KEY=
-ge-publish --testnet publish limiter
+# Set the network chain id
+export CHAIN_ID=
+ge-publish publish limiter
 ```
 
 ### SwapPool
@@ -51,7 +53,9 @@ ge-publish --testnet publish limiter
 ```bash
 # Set your private key
 export PRIVATE_KEY=
-ge-publish --testnet publish swap-pool --name MySwapPool --symbol SWP1 --decimals 6 --token-registry 0x000000000000000000000000000000000000dEaD --token-limiter 0x000000000000000000000000000000000000dEaD
+# Set the network chain id
+export CHAIN_ID=
+ge-publish publish swap-pool --name MySwapPool --symbol SWP1 --decimals 6 --token-registry 0x000000000000000000000000000000000000dEaD --token-limiter 0x000000000000000000000000000000000000dEaD
 ```
 
 ## License
