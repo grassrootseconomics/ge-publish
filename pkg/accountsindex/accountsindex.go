@@ -17,7 +17,7 @@ const (
 	name            = "AccountsIndex"
 	version         = "v0.6.0"
 	license         = "AGPL-3.0"
-	source          = "https://git.grassecon.net/cicnet/eth-accounts-index"
+	source          = "https://git.grassecon.net/cicnet/eth-accounts-index/src/branch/dev-0.6.0/solidity"
 	solidityVersion = "0.8.25+commit.b61c2a91"
 	evmFork         = "istanbul"
 

@@ -6,6 +6,7 @@ import (
 	"github.com/celo-org/celo-blockchain/common"
 	"github.com/grassrootseconomics/ge-publish/pkg/accountsindex"
 	"github.com/grassrootseconomics/ge-publish/pkg/decimalquote"
+	"github.com/grassrootseconomics/ge-publish/pkg/erc20"
 	"github.com/grassrootseconomics/ge-publish/pkg/erc20demurrage"
 	"github.com/grassrootseconomics/ge-publish/pkg/ethfaucet"
 	"github.com/grassrootseconomics/ge-publish/pkg/limiter"
@@ -57,6 +58,13 @@ type (
 		DecayLevel         *big.Int
 		PeriodMinutes      *big.Int
 		DefaultSinkAddress common.Address
+	}
+
+	ERC20ConstructorArgs struct {
+		Name            string
+		Symbol          string
+		Decimals        uint8
+		ExpiryTimestamp *big.Int
 	}
 )
 
@@ -133,5 +141,16 @@ func NewEthFaucet() Contract {
 func NewAccountsIndex() Contract {
 	return &accountsindex.AccountsIndex{
 		Constructor: []any{},
+	}
+}
+
+func NewERC20(args ERC20ConstructorArgs) Contract {
+	return &erc20.ERC20{
+		Constructor: []any{
+			args.Name,
+			args.Symbol,
+			args.Decimals,
+			args.ExpiryTimestamp,
+		},
 	}
 }

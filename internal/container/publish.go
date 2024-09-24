@@ -22,6 +22,7 @@ func (c *Container) RegisterPublishCommands() []*cli.Command {
 		c.periodSimple(),
 		c.ethFaucet(),
 		c.accountsIndex(),
+		c.erc20(),
 	}
 }
 
@@ -230,7 +231,7 @@ func (c *Container) tokenIndex() *cli.Command {
 func (c *Container) erc20Demurrage() *cli.Command {
 	return &cli.Command{
 		Name:    "erc20-demurrage",
-		Aliases: []string{"erc20", "det", "voucher", "token"},
+		Aliases: []string{"det"},
 		Usage:   "Publish the ERC20 (demurrage) smart contract",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
@@ -363,6 +364,72 @@ func (c *Container) accountsIndex() *cli.Command {
 		Usage:   "Publish the accounts index smart contract",
 		Action: func(cCtx *cli.Context) error {
 			contract := contract.NewAccountsIndex()
+			bytecode, err := contract.Bytecode()
+			if err != nil {
+				return err
+			}
+			c.logInitStage(contract)
+
+			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.MaxGasLimit())
+			if err != nil {
+				return err
+			}
+			c.logPublishedStage(contract, resp)
+
+			return nil
+		},
+	}
+}
+
+func (c *Container) erc20() *cli.Command {
+	return &cli.Command{
+		Name:    "erc20",
+		Aliases: []string{"giftable"},
+		Usage:   "Publish the ERC20 (non-demurrage) smart contract",
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:     "name",
+				Usage:    "Token name",
+				Required: true,
+			},
+			&cli.StringFlag{
+				Name:     "symbol",
+				Usage:    "Token symbol",
+				Required: true,
+				Action: func(ctx *cli.Context, s string) error {
+					if len(s) < 3 || len(s) > 10 {
+						return fmt.Errorf("flag symbol %s length out of range[3-10]", s)
+					}
+					return nil
+				},
+			},
+			&cli.UintFlag{
+				Name:     "decimals",
+				Usage:    "Token decimals",
+				Value:    6,
+				Required: false,
+				Action: func(ctx *cli.Context, u uint) error {
+					if u == 0 || u > 18 {
+						return fmt.Errorf("flag decimals value %d out of range[1-18]", u)
+					}
+					return nil
+				},
+			},
+			&cli.Uint64Flag{
+				Name:     "expiry-timestamp",
+				Aliases:  []string{"expiry"},
+				Usage:    "Date time after which the tokens won't be transferable",
+				Value:    0,
+				Required: false,
+			},
+		},
+		Action: func(cCtx *cli.Context) error {
+			contract := contract.NewERC20(contract.ERC20ConstructorArgs{
+				Name:            cCtx.String("name"),
+				Symbol:          strings.ToUpper(cCtx.String("symbol")),
+				Decimals:        uint8(cCtx.Uint("decimals")),
+				ExpiryTimestamp: big.NewInt(int64(cCtx.Uint64("expiry-timestamp"))),
+			})
 			bytecode, err := contract.Bytecode()
 			if err != nil {
 				return err
