@@ -5,6 +5,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/grassrootseconomics/ge-publish/pkg/accountsindex"
+	"github.com/grassrootseconomics/ge-publish/pkg/contractsregistry"
 	"github.com/grassrootseconomics/ge-publish/pkg/decimalquote"
 	"github.com/grassrootseconomics/ge-publish/pkg/erc20"
 	"github.com/grassrootseconomics/ge-publish/pkg/erc20demurrage"
@@ -151,6 +152,20 @@ func NewERC20(args ERC20ConstructorArgs) Contract {
 			args.Symbol,
 			args.Decimals,
 			args.ExpiryTimestamp,
+		},
+	}
+}
+
+func NewContractsRegistry(identifiers []string) Contract {
+	// bytes32[] memory _identifiers
+	byte32identifiers := []common.Hash{}
+	for _, v := range identifiers {
+		byte32identifiers = append(byte32identifiers, common.BytesToHash(common.RightPadBytes([]byte(v), 32)))
+	}
+
+	return &contractsregistry.ContractsRegistry{
+		Constructor: []any{
+			byte32identifiers,
 		},
 	}
 }

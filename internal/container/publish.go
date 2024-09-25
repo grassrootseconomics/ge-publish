@@ -23,6 +23,7 @@ func (c *Container) RegisterPublishCommands() []*cli.Command {
 		c.ethFaucet(),
 		c.accountsIndex(),
 		c.erc20(),
+		c.contractsRegistry(),
 	}
 }
 
@@ -430,6 +431,37 @@ func (c *Container) erc20() *cli.Command {
 				Decimals:        uint8(cCtx.Uint("decimals")),
 				ExpiryTimestamp: big.NewInt(int64(cCtx.Uint64("expiry-timestamp"))),
 			})
+			bytecode, err := contract.Bytecode()
+			if err != nil {
+				return err
+			}
+			c.logInitStage(contract)
+
+			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.MaxGasLimit())
+			if err != nil {
+				return err
+			}
+			c.logPublishedStage(contract, resp)
+
+			return nil
+		},
+	}
+}
+
+func (c *Container) contractsRegistry() *cli.Command {
+	return &cli.Command{
+		Name:    "contracts-registry",
+		Aliases: []string{"registry"},
+		Usage:   "Publish the contracts registry smart contract",
+		Flags: []cli.Flag{
+			&cli.StringSliceFlag{
+				Name:     "identifier",
+				Usage:    "Contract identifier",
+				Required: true,
+			},
+		},
+		Action: func(cCtx *cli.Context) error {
+			contract := contract.NewContractsRegistry(cCtx.StringSlice("identifier"))
 			bytecode, err := contract.Bytecode()
 			if err != nil {
 				return err

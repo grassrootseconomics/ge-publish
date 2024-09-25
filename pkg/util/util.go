@@ -24,6 +24,8 @@ func DumpConstructorArgs(constructorArgs []any) []string {
 			dumpedArgs[i] = v.String()
 		case common.Address:
 			dumpedArgs[i] = v.String()
+		default:
+			dumpedArgs[i] = fmt.Sprintf("%v", v)
 		}
 	}
 	return dumpedArgs
