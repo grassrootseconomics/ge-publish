@@ -6,6 +6,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/grassrootseconomics/ge-publish/pkg/accountsindex"
 	"github.com/grassrootseconomics/ge-publish/pkg/contractsregistry"
+	"github.com/grassrootseconomics/ge-publish/pkg/custodialregistrationproxy"
 	"github.com/grassrootseconomics/ge-publish/pkg/decimalquote"
 	"github.com/grassrootseconomics/ge-publish/pkg/erc20"
 	"github.com/grassrootseconomics/ge-publish/pkg/erc20demurrage"
@@ -66,6 +67,13 @@ type (
 		Symbol          string
 		Decimals        uint8
 		ExpiryTimestamp *big.Int
+	}
+
+	CustodialRegistrationProxyArgs struct {
+		EthFaucetAddress     common.Address
+		AccountsIndexAddress common.Address
+		TrainingTokenAddress common.Address
+		SystemAccountAddress common.Address
 	}
 )
 
@@ -166,6 +174,17 @@ func NewContractsRegistry(identifiers []string) Contract {
 	return &contractsregistry.ContractsRegistry{
 		Constructor: []any{
 			byte32identifiers,
+		},
+	}
+}
+
+func NewCustodialRegistrationProxy(args CustodialRegistrationProxyArgs) Contract {
+	return &custodialregistrationproxy.CustodialRegistrationProxy{
+		Constructor: []any{
+			args.EthFaucetAddress,
+			args.AccountsIndexAddress,
+			args.TrainingTokenAddress,
+			args.SystemAccountAddress,
 		},
 	}
 }

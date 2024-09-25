@@ -24,6 +24,7 @@ func (c *Container) RegisterPublishCommands() []*cli.Command {
 		c.accountsIndex(),
 		c.erc20(),
 		c.contractsRegistry(),
+		c.custodialRegistrationProxy(),
 	}
 }
 
@@ -462,6 +463,62 @@ func (c *Container) contractsRegistry() *cli.Command {
 		},
 		Action: func(cCtx *cli.Context) error {
 			contract := contract.NewContractsRegistry(cCtx.StringSlice("identifier"))
+			bytecode, err := contract.Bytecode()
+			if err != nil {
+				return err
+			}
+			c.logInitStage(contract)
+
+			resp, err := c.SendContractPublishTx(cCtx, bytecode, contract.MaxGasLimit())
+			if err != nil {
+				return err
+			}
+			c.logPublishedStage(contract, resp)
+
+			return nil
+		},
+	}
+}
+
+func (c *Container) custodialRegistrationProxy() *cli.Command {
+	return &cli.Command{
+		Name:    "custodial-registration-proxy",
+		Aliases: []string{"custodial"},
+		Usage:   "Publish the custodial registration proxy smart contract",
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:     "eth-faucet-address",
+				Aliases:  []string{"gas-faucet", "faucet"},
+				Usage:    "The gas faucet address",
+				Required: true,
+			},
+			&cli.StringFlag{
+				Name:     "accounts-index-address",
+				Aliases:  []string{"user-index"},
+				Usage:    "The accounts index address",
+				Required: true,
+			},
+			&cli.StringFlag{
+				Name:     "training-token",
+				Aliases:  []string{"training-voucher"},
+				Usage:    "Optional training token address",
+				Value:    ethutils.ZeroAddress.Hex(),
+				Required: false,
+			},
+			&cli.StringFlag{
+				Name:     "system-account-address",
+				Aliases:  []string{"system-account"},
+				Usage:    "The system account address",
+				Required: true,
+			},
+		},
+		Action: func(cCtx *cli.Context) error {
+			contract := contract.NewCustodialRegistrationProxy(contract.CustodialRegistrationProxyArgs{
+				EthFaucetAddress:     ethutils.HexToAddress(cCtx.String("eth-faucet-address")),
+				AccountsIndexAddress: ethutils.HexToAddress(cCtx.String("accounts-index-address")),
+				TrainingTokenAddress: ethutils.HexToAddress(cCtx.String("training-token")),
+				SystemAccountAddress: ethutils.HexToAddress(cCtx.String("system-account-address")),
+			})
 			bytecode, err := contract.Bytecode()
 			if err != nil {
 				return err

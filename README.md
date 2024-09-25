@@ -18,6 +18,7 @@ Supported Smart Contracts:
 - [x] GiftableERC20
 - [x] AccountsIndex
 - [x] ContractsRegistry
+- [x] CustodialRegistrationProxy
 
 _Note:_ All smart contracts are compiled with `v0.8.25, Istanbul hard fork` unless otherwise stated.
 
