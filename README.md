@@ -17,6 +17,7 @@ Supported Smart Contracts:
 - [x] SimplePeriodBackend
 - [x] GiftableERC20
 - [x] AccountsIndex
+- [x] ContractsRegistry
 
 _Note:_ All smart contracts are compiled with `v0.8.25, Istanbul hard fork` unless otherwise stated.
 
