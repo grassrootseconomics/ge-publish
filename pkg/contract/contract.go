@@ -72,7 +72,6 @@ type (
 	CustodialRegistrationProxyArgs struct {
 		EthFaucetAddress     common.Address
 		AccountsIndexAddress common.Address
-		TrainingTokenAddress common.Address
 		SystemAccountAddress common.Address
 	}
 )
@@ -183,7 +182,6 @@ func NewCustodialRegistrationProxy(args CustodialRegistrationProxyArgs) Contract
 		Constructor: []any{
 			args.EthFaucetAddress,
 			args.AccountsIndexAddress,
-			args.TrainingTokenAddress,
 			args.SystemAccountAddress,
 		},
 	}

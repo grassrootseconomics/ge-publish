@@ -15,13 +15,13 @@ type (
 
 const (
 	name            = "CustodialRegistrationProxy"
-	version         = "v0.1.0"
+	version         = "v1.0.0"
 	license         = "AGPL-3.0"
 	source          = "https://github.com/grassrootseconomics/custodial-registration-proxy/tree/master/solidity"
 	solidityVersion = "0.8.25+commit.b61c2a91"
 	evmFork         = "istanbul"
 
-	gasLimit = 2_000_000
+	gasLimit = 750_000
 )
 
 var (

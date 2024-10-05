@@ -499,13 +499,6 @@ func (c *Container) custodialRegistrationProxy() *cli.Command {
 				Required: true,
 			},
 			&cli.StringFlag{
-				Name:     "training-token",
-				Aliases:  []string{"training-voucher"},
-				Usage:    "Optional training token address",
-				Value:    ethutils.ZeroAddress.Hex(),
-				Required: false,
-			},
-			&cli.StringFlag{
 				Name:     "system-account-address",
 				Aliases:  []string{"system-account"},
 				Usage:    "The system account address",
@@ -516,7 +509,6 @@ func (c *Container) custodialRegistrationProxy() *cli.Command {
 			contract := contract.NewCustodialRegistrationProxy(contract.CustodialRegistrationProxyArgs{
 				EthFaucetAddress:     ethutils.HexToAddress(cCtx.String("eth-faucet-address")),
 				AccountsIndexAddress: ethutils.HexToAddress(cCtx.String("accounts-index-address")),
-				TrainingTokenAddress: ethutils.HexToAddress(cCtx.String("training-token")),
 				SystemAccountAddress: ethutils.HexToAddress(cCtx.String("system-account-address")),
 			})
 			bytecode, err := contract.Bytecode()
