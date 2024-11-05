@@ -1,6 +1,7 @@
 package container
 
 import (
+	"errors"
 	"fmt"
 	"math/big"
 	"strings"
@@ -264,19 +265,31 @@ func (c *Container) erc20Demurrage() *cli.Command {
 					return nil
 				},
 			},
-			&cli.Uint64Flag{
-				Name:     "demurrage-level",
-				Aliases:  []string{"decay-level"},
-				Usage:    "Level of decay per minute",
-				Value:    20000,
+			&cli.Int64Flag{
+				Name:     "demurrage-rate",
+				Aliases:  []string{"expiry-rate"},
+				Usage:    "This is the rate at which the voucher will expire per redistribution period",
+				Value:    2,
 				Required: false,
+				Action: func(ctx *cli.Context, x int64) error {
+					if x < 1 {
+						return errors.New("rate should be atleast 1 percent")
+					}
+					return nil
+				},
 			},
-			&cli.Uint64Flag{
+			&cli.Int64Flag{
 				Name:     "redistribution-period",
 				Aliases:  []string{"period-minutes"},
 				Usage:    "Number of minutes between each time the demurraged value can be withdrawn to the Sink Account",
 				Value:    43200,
 				Required: false,
+				Action: func(ctx *cli.Context, x int64) error {
+					if x < 10080 {
+						return errors.New("redistribution period should be atleast 1 week equivalent in minutes")
+					}
+					return nil
+				},
 			},
 			&cli.StringFlag{
 				Name:     "sink-address",
@@ -286,11 +299,16 @@ func (c *Container) erc20Demurrage() *cli.Command {
 			},
 		},
 		Action: func(cCtx *cli.Context) error {
+			base := new(big.Int).Sub(big.NewInt(100), big.NewInt(cCtx.Int64("demurrage-rate")))
+			exponent := new(big.Int).SetInt64(1)
+			exponent = exponent.Div(exponent, big.NewInt(cCtx.Int64("redistribution-period")))
+			result := new(big.Int).Exp(base, exponent, nil)
+
 			contract := contract.NewERC20Demurrage(contract.ERC20DemurrageConstructorArgs{
 				Name:               cCtx.String("name"),
 				Symbol:             strings.ToUpper(cCtx.String("symbol")),
 				Decimals:           uint8(cCtx.Uint("decimals")),
-				DecayLevel:         big.NewInt(int64(cCtx.Uint64("demurrage-level"))),
+				DecayLevel:         result,
 				PeriodMinutes:      big.NewInt(int64(cCtx.Uint64("redistribution-period"))),
 				DefaultSinkAddress: ethutils.HexToAddress(cCtx.String("sink-address")),
 			})
