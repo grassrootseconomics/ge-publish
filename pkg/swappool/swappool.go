@@ -17,7 +17,7 @@ const (
 	name            = "SwapPool"
 	version         = "5189aec"
 	license         = "AGPL-3.0"
-	source          = "https://github.com/grassrootseconomics/erc20-pool/blob/sohail/pool-updates/solidity/SwapPool.sol"
+	source          = "https://github.com/grassrootseconomics/erc20-pool/blob/master/solidity/SwapPool.sol"
 	solidityVersion = "0.8.25+commit.b61c2a91"
 	evmFork         = "istanbul"
 
