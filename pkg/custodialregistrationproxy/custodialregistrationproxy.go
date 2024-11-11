@@ -21,7 +21,7 @@ const (
 	solidityVersion = "0.8.25+commit.b61c2a91"
 	evmFork         = "istanbul"
 
-	gasLimit = 750_000
+	gasLimit = 1_000_000
 )
 
 var (

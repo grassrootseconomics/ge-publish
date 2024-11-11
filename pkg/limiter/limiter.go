@@ -21,7 +21,7 @@ const (
 	solidityVersion = "0.8.19+commit.7dd6d404"
 	evmFork         = "byzantium"
 
-	gasLimit = 750_000
+	gasLimit = 1_000_000
 )
 
 var (
