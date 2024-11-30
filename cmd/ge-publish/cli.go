@@ -14,7 +14,7 @@ var (
 )
 
 func main() {
-	container := container.NewContainer()
+	baseContainer := container.NewContainer()
 
 	app := &cli.App{
 		Name:    "ge-publish",
@@ -25,7 +25,7 @@ func main() {
 				Name:        "publish",
 				Aliases:     []string{"p"},
 				Usage:       "Publish smart contracts",
-				Subcommands: container.RegisterPublishCommands(),
+				Subcommands: baseContainer.RegisterPublishCommands(),
 			},
 		},
 		Flags: []cli.Flag{
@@ -77,12 +77,20 @@ func main() {
 				Usage:   "Verbose logging",
 				EnvVars: []string{"DEBUG"},
 			},
+			&cli.BoolFlag{
+				Name:    "json",
+				Value:   false,
+				Usage:   "JSON logging",
+				EnvVars: []string{"JSON"},
+			},
 		},
 		Before: func(cCtx *cli.Context) error {
-			if cCtx.Bool("vv") {
-				container.UseDebugMode()
-			}
-			container.Logg.Debug("ge-publish debug mode",
+			baseContainer.OverrideLogger(container.LoggOpts{
+				Debug: cCtx.Bool("vv"),
+				JSON:  cCtx.Bool("json"),
+			})
+
+			baseContainer.Logg.Debug("ge-publish debug mode",
 				"version", cCtx.App.Version,
 				"rpc_endpoint", cCtx.String("rpc"),
 				"chainid", cCtx.Int64("chainid"),
