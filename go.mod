@@ -4,7 +4,7 @@ go 1.23.1
 
 require (
 	github.com/ethereum/go-ethereum v1.14.8
-	github.com/grassrootseconomics/ethutils v1.3.0
+	github.com/grassrootseconomics/ethutils v1.3.1
 	github.com/kamikazechaser/common v1.0.0
 	github.com/lmittmann/w3 v0.17.0
 	github.com/urfave/cli/v2 v2.27.4
