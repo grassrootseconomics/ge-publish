@@ -4,6 +4,7 @@ import (
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/grassrootseconomics/ethutils"
 	"github.com/lmittmann/w3/module/eth"
@@ -50,6 +51,12 @@ func (c *Container) SendContractPublishTx(cCtx *cli.Context, contractBytecode []
 	if err != nil {
 		return PublishTxResp{}, err
 	}
+	rawTx, err := tx.MarshalBinary()
+	if err != nil {
+		return PublishTxResp{}, err
+	}
+
+	c.Logg.Debug("tx", "raw_tx", hexutil.Encode(rawTx))
 
 	if err := p.Client.CallCtx(
 		cCtx.Context,
