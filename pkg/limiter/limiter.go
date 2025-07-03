@@ -14,12 +14,14 @@ type (
 )
 
 const (
-	name            = "Limiter"
-	version         = "v0.0.1"
-	license         = "AGPL-3.0"
-	source          = "https://github.com/nolash/erc20-limiter/blob/master/solidity/Limiter.sol"
-	solidityVersion = "0.8.19+commit.7dd6d404"
-	evmFork         = "byzantium"
+	name             = "Limiter"
+	version          = "v0.0.1"
+	license          = "AGPL-3.0"
+	source           = "https://github.com/nolash/erc20-limiter/blob/master/solidity/Limiter.sol"
+	solidityVersion  = "0.8.30+commit.73712a01"
+	evmFork          = "shanghai"
+	optimizationRuns = 200
+	optimized        = true
 
 	gasLimit = 1_000_000
 )

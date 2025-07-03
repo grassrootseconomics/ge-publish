@@ -14,14 +14,16 @@ type (
 )
 
 const (
-	name            = "SwapPool"
-	version         = "5189aec"
-	license         = "AGPL-3.0"
-	source          = "https://github.com/grassrootseconomics/erc20-pool/blob/master/solidity/SwapPool.sol"
-	solidityVersion = "0.8.25+commit.b61c2a91"
-	evmFork         = "istanbul"
+	name             = "SwapPool"
+	version          = "5189aec"
+	license          = "AGPL-3.0"
+	source           = "https://github.com/grassrootseconomics/erc20-pool/blob/master/solidity/SwapPool.sol"
+	solidityVersion  = "0.8.30+commit.73712a01"
+	evmFork          = "shanghai"
+	optimizationRuns = 200
+	optimized        = true
 
-	gasLimit = 4_000_000
+	gasLimit = 2_000_000
 )
 
 var (

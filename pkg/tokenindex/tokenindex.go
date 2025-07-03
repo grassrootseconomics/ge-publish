@@ -14,14 +14,16 @@ type (
 )
 
 const (
-	name            = "TokenIndex"
-	version         = "v0.6.3"
-	license         = "AGPL-3.0"
-	source          = "https://github.com/nolash/eth-token-index/blob/master/solidity/TokenUniqueSymbolIndex.sol"
-	solidityVersion = "0.8.19+commit.7dd6d404"
-	evmFork         = "byzantium"
+	name             = "TokenIndex"
+	version          = "v0.6.3"
+	license          = "AGPL-3.0"
+	source           = "https://github.com/nolash/eth-token-index/blob/master/solidity/TokenUniqueSymbolIndex.sol"
+	solidityVersion  = "0.8.30+commit.73712a01"
+	evmFork          = "shanghai"
+	optimizationRuns = 200
+	optimized        = true
 
-	gasLimit = 2_500_000
+	gasLimit = 1_500_000
 )
 
 var (

@@ -14,12 +14,14 @@ type (
 )
 
 const (
-	name            = "PriceIndexQuoter"
-	version         = "6721100"
-	license         = "AGPL-3.0"
-	source          = "https://github.com/grassrootseconomics/price-index-quoter/blob/master/src/PriceIndexQuoter.sol"
-	solidityVersion = "0.8.25+commit.b61c2a91"
-	evmFork         = "istanbul"
+	name             = "PriceIndexQuoter"
+	version          = "6721100"
+	license          = "AGPL-3.0"
+	source           = "https://github.com/grassrootseconomics/price-index-quoter/blob/master/src/PriceIndexQuoter.sol"
+	solidityVersion  = "0.8.30+commit.73712a01"
+	evmFork          = "shanghai"
+	optimizationRuns = 200
+	optimized        = true
 
 	gasLimit = 2_500_000
 )
