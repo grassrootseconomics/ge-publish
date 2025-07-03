@@ -15,7 +15,7 @@ type (
 
 const (
 	name             = "SwapPool"
-	version          = "5189aec"
+	version          = "5caa4be"
 	license          = "AGPL-3.0"
 	source           = "https://github.com/grassrootseconomics/erc20-pool/blob/master/solidity/SwapPool.sol"
 	solidityVersion  = "0.8.30+commit.73712a01"
