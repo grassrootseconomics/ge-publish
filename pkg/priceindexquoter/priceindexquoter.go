@@ -23,7 +23,7 @@ const (
 	optimizationRuns = 200
 	optimized        = true
 
-	gasLimit = 2_500_000
+	gasLimit = 1_000_000
 )
 
 var (
