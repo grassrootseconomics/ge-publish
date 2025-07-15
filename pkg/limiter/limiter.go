@@ -15,9 +15,9 @@ type (
 
 const (
 	name             = "Limiter"
-	version          = "v0.0.1"
+	version          = "d5c38bf"
 	license          = "AGPL-3.0"
-	source           = "https://github.com/nolash/erc20-limiter/blob/master/solidity/Limiter.sol"
+	source           = "https://github.com/grassrootseconomics/erc20-limiter/blob/master/solidity/Limiter.sol"
 	solidityVersion  = "0.8.30+commit.73712a01"
 	evmFork          = "shanghai"
 	optimizationRuns = 200

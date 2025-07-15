@@ -15,9 +15,9 @@ type (
 
 const (
 	name             = "TokenIndex"
-	version          = "v0.6.3"
+	version          = "4a87c34"
 	license          = "AGPL-3.0"
-	source           = "https://github.com/nolash/eth-token-index/blob/master/solidity/TokenUniqueSymbolIndex.sol"
+	source           = "https://github.com/grassrootseconomics/eth-token-index/blob/master/solidity/TokenUniqueSymbolIndex.sol"
 	solidityVersion  = "0.8.30+commit.73712a01"
 	evmFork          = "shanghai"
 	optimizationRuns = 200
