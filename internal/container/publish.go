@@ -8,6 +8,7 @@ import (
 
 	"github.com/grassrootseconomics/ethutils"
 	"github.com/grassrootseconomics/ge-publish/pkg/contract"
+	"github.com/grassrootseconomics/ge-publish/pkg/util"
 	"github.com/urfave/cli/v2"
 )
 
@@ -299,16 +300,21 @@ func (c *Container) erc20Demurrage() *cli.Command {
 			},
 		},
 		Action: func(cCtx *cli.Context) error {
-			base := new(big.Int).Sub(big.NewInt(100), big.NewInt(cCtx.Int64("demurrage-rate")))
-			exponent := new(big.Int).SetInt64(1)
-			exponent = exponent.Div(exponent, big.NewInt(cCtx.Int64("redistribution-period")))
-			result := new(big.Int).Exp(base, exponent, nil)
+			decayLevel, err := util.CalculateDecayLevel(
+				cCtx.Int64("demurrage-rate"),
+				cCtx.Int64("redistribution-period"),
+			)
+			if err != nil {
+				return err
+			}
+
+			c.Logg.Info("calculated decay level", "decay_level", decayLevel.String())
 
 			contract := contract.NewERC20Demurrage(contract.ERC20DemurrageConstructorArgs{
 				Name:               cCtx.String("name"),
 				Symbol:             strings.ToUpper(cCtx.String("symbol")),
 				Decimals:           uint8(cCtx.Uint("decimals")),
-				DecayLevel:         result,
+				DecayLevel:         decayLevel,
 				PeriodMinutes:      big.NewInt(int64(cCtx.Uint64("redistribution-period"))),
 				DefaultSinkAddress: ethutils.HexToAddress(cCtx.String("sink-address")),
 			})

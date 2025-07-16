@@ -15,13 +15,13 @@ type (
 
 const (
 	name            = "ERC20Demurrage"
-	version         = "v0.5.7"
+	version         = "8c09ff2"
 	license         = "AGPL-3.0"
-	source          = "https://github.com/nolash/erc20-demurrage-token/tree/dev-0.5.7/solidity"
-	solidityVersion = "0.8.25+commit.b61c2a91"
-	evmFork         = "istanbul"
+	source          = "https://github.com/grassrootseconomics/erc20-demurrage-token/tree/master/solidity"
+	solidityVersion = "0.8.30+commit.73712a01"
+	evmFork         = "shanghai"
 
-	gasLimit = 10_000_000
+	gasLimit = 5_000_000
 )
 
 var (

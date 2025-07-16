@@ -20,7 +20,7 @@ Supported Smart Contracts:
 - [x] ContractsRegistry
 - [x] CustodialRegistrationProxy
 
-_Note:_ All smart contracts are compiled with `v0.8.25, Istanbul hard fork` unless otherwise stated.
+_Note:_ All smart contracts are compiled with `v0.8.30, Shanghai hard fork` unless otherwise stated.
 
 ## Install
 
