@@ -44,6 +44,14 @@ func main() {
 				Value:    "http://localhost:8545",
 				EnvVars:  []string{"RPC_PROVIDER"},
 			},
+			&cli.StringFlag{
+				Name:     "divvi",
+				Aliases:  []string{"d"},
+				Usage:    "Divvi consumer address",
+				Required: false,
+				Value:    "0x5523058cdFfe5F3c1EaDADD5015E55C6E00fb439",
+				EnvVars:  []string{"DIVVI_CONSUMER_ADDRESS"},
+			},
 			&cli.Int64Flag{
 				Name:    "gas-fee-cap",
 				Aliases: []string{"fee", "gas-fee"},

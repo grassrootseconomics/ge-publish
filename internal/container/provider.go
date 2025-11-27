@@ -22,7 +22,7 @@ func (c *Container) SendContractPublishTx(cCtx *cli.Context, contractBytecode []
 		txHash common.Hash
 	)
 
-	p := ethutils.NewProvider(cCtx.String("rpc"), cCtx.Int64("chainid"))
+	p := ethutils.NewProvider(cCtx.String("rpc"), cCtx.Int64("chainid"), ethutils.WithDivviConsumerAddress(cCtx.String("divvi")))
 
 	privateKey, err := crypto.HexToECDSA(cCtx.String("private-key"))
 	if err != nil {
@@ -38,10 +38,11 @@ func (c *Container) SendContractPublishTx(cCtx *cli.Context, contractBytecode []
 		return PublishTxResp{}, err
 	}
 
+	divviRefferal := p.GetReferalTag(publicKey)
 	tx, err := p.SignContractPublishTx(
 		privateKey,
 		ethutils.ContractPublishTxOpts{
-			ContractByteCode: contractBytecode,
+			ContractByteCode: ethutils.ConcatBytes(contractBytecode, divviRefferal),
 			GasFeeCap:        big.NewInt(cCtx.Int64("gas-fee-cap")),
 			GasTipCap:        big.NewInt(cCtx.Int64("gas-tip-cap")),
 			GasLimit:         gasLimit,
@@ -64,6 +65,8 @@ func (c *Container) SendContractPublishTx(cCtx *cli.Context, contractBytecode []
 	); err != nil {
 		return PublishTxResp{}, err
 	}
+
+	_ = p.SubmitReferral(cCtx.Context, txHash)
 
 	return PublishTxResp{
 		TxHash:          txHash,
