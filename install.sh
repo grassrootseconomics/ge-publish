@@ -87,7 +87,7 @@ fi
 echo
 echo "Detected your preferred shell is $PREF_SHELL and added ge-publish to PATH."
 echo "Run 'source $PROFILE' or start a new terminal session to use ge-publish."
-echo "Then, simply run 'ge-publish --version' to check the version ans start using it."
+echo "Then, simply run 'ge-publish --version' to check the version and start using it."
 
 tolower() {
   echo "$1" | awk '{print tolower($0)}'
